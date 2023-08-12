@@ -90,7 +90,8 @@ const Products = (props) => {
     data: [],
   })
   console.log(`Rendering Products ${JSON.stringify(data)}`)
-  // Fetch Data
+
+  // Cart Functionality
   const addToCart = (e) => {
     let name = e.target.name
     let item = items.filter((item) => item.name == name)
@@ -111,8 +112,10 @@ const Products = (props) => {
     setCart(newCart)
     setItems(newItems)
   }
-  const photos = ['apple.png', 'orange.png', 'beans.png', 'cabbage.png']
 
+  // const photos = ['apple.png', 'orange.png', 'beans.png', 'cabbage.png']
+
+  // Stock List
   let list = items.map((item, index) => {
     let n = index + 1049
     let uhit = 'http://picsum.photos/' + n
@@ -121,15 +124,28 @@ const Products = (props) => {
     // let uhit = 'https://source.unsplash.com/random/800x800/?img=' + n
 
     return (
-      <li key={index}>
+      <li key={index} className='mb-3'>
         <Image src={uhit} width={70} roundedCircle alt={`img-${n}`}></Image>
-        <Button variant='primary' size='large'>
-          {item.name}:${item.cost}-Stock={item.instock}
+        <Button
+          variant={item.instock < 1 ? 'danger' : 'primary'}
+          size='large'
+          className='mx-1'
+        >
+          {item.name}:${item.cost}
+          <br />
+          Stock={item.instock}
         </Button>
-        <input name={item.name} type='submit' onClick={addToCart}></input>
+        <input
+          name={item.name}
+          type='submit'
+          onClick={addToCart}
+          value='Add to Cart'
+        />
       </li>
     )
   })
+
+  // Cart List
   let cartList = cart.map((item, index) => {
     return (
       <Card key={index}>
@@ -170,6 +186,7 @@ const Products = (props) => {
     //cart.map((item, index) => deleteCartItem(index));
     return newTotal
   }
+
   const restockProducts = (url) => {
     doFetch(url)
     let newItems = data.map((item) => {
