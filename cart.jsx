@@ -27,6 +27,7 @@ const useDataApi = (initialUrl, initialData) => {
     data: initialData,
   })
   console.log(`useDataApi called`)
+
   useEffect(() => {
     console.log('useEffect Called')
     let didCancel = false
@@ -49,8 +50,10 @@ const useDataApi = (initialUrl, initialData) => {
       didCancel = true
     }
   }, [url])
+
   return [state, setUrl]
 }
+
 const dataFetchReducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_INIT':
@@ -189,8 +192,8 @@ const Products = (props) => {
 
   const restockProducts = (url) => {
     doFetch(url)
-    let newItems = data.map((item) => {
-      let { name, country, cost, instock } = item
+    let newItems = data.data.map((item) => {
+      let { name, country, cost, instock } = item.attributes
       return { name, country, cost, instock }
     })
     setItems([...items, ...newItems])
